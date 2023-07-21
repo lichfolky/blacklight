@@ -19,23 +19,18 @@ if (ctx) {
 
     canvas.addEventListener("mouseout", (event) => {
         mouseout = true;
-
     });
 
     imgdark.addEventListener(
         "load",
-        () => {
-            loadingdark = false;
-        }
+        () => loadingdark = false
     );
     imglight.addEventListener(
         "load",
-        () => {
-            loadinglight = false;
-        }
+        () => loadinglight = false
     );
-    imgdark.src = "/img/darkroom.jpg";
-    imglight.src = "/img/lightroom.jpg";
+    imgdark.src = "./img/darkroom.jpg";
+    imglight.src = "./img/lightroom.jpg";
     drawdark();
 }
 
@@ -56,10 +51,7 @@ function drawlight() {
         //ctx.createRadialGradient(x, y, 1, x, y, 50);
         ctx.clip();
         ctx.drawImage(imglight, 0, 0, ctx.canvas.width, ctx.canvas.height);
-        //ctx.clip();
         ctx.restore();
-
-
     }
     requestAnimationFrame(drawlight);
 }
