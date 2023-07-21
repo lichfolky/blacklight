@@ -2,8 +2,8 @@ const canvas = document.getElementById("scene");
 const scoreEl = document.querySelector(".score");
 const ctx = canvas?.getContext("2d");
 
-let x = 0;
-let y = 0;
+let mouseX = 0;
+let mouseY = 0;
 let loadinglight = true;
 let loadingdark = true;
 const imgdark = new Image();
@@ -12,26 +12,36 @@ let mouseout = true;
 let score = 0;
 let pointsX = [22, 600, 800, 400, 615];
 let pointsY = [420, 510, 370, 130, 145];
+let foundX = [];
+let foundY = [];
+
+
 const tollerance = 20;
 
 
 if (ctx) {
-    scoreEl.textContent = score;
+    scoreEl.innerHTML = "<p>" + score + "/5</p>";
     canvas.addEventListener("mousemove", (event) => {
         const rect = canvas.getBoundingClientRect();
-        x = event.clientX - rect.left;
-        y = event.clientY - rect.top;
-
+        mouseX = event.clientX - rect.left;
+        mouseY = event.clientY - rect.top;
         for (let i = 0; i < pointsX.length; i++) {
-            if (pointsX[i] <= x + tollerance && pointsX[i] >= x - tollerance) {
-                if (pointsY[i] <= y + tollerance && pointsY[i] >= y - tollerance) {
+            if (pointsX[i] <= mouseX + tollerance && pointsX[i] >= mouseX - tollerance) {
+                if (pointsY[i] <= mouseY + tollerance && pointsY[i] >= mouseY - tollerance) {
                     score++;
-                    pointsX.splice(i, 1);
-                    pointsY.splice(i, 1);
+                    foundX.push(pointsX.splice(i, 1));
+                    foundY.push(pointsY.splice(i, 1));
                 }
             }
         }
-        scoreEl.textContent = score + " " + x + " " + y;
+
+        if (score == 5) {
+            scoreEl.innerHTML = "You win!";
+        } else {
+            scoreEl.innerHTML = "<p>" + score + "/5</p>";
+        }
+        scoreEl.innerHTML += "<p>" + mouseX + " " + mouseY + "</p>";
+
         mouseout = false;
     });
 
@@ -56,16 +66,23 @@ function drawlight() {
     if (!loadingdark && !loadinglight) {
         ctx.drawImage(imgdark, 0, 0, ctx.canvas.width, ctx.canvas.height);
         if (!mouseout) {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(x, y, 60, 0, Math.PI * 2, true);
+            drawDot(mouseX, mouseY, 60);
             //ctx.createRadialGradient(x, y, 1, x, y, 50);
-            ctx.clip();
-            ctx.drawImage(imglight, 0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.restore();
+        }
+        for (let i = 0; i < foundX.length; i++) {
+            drawDot(foundX[i], foundY[i], 60);
         }
     }
     requestAnimationFrame(drawlight);
 }
 
+
+function drawDot(x, y, size) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, size, 0, Math.PI * 2, true);
+    ctx.clip();
+    ctx.drawImage(imglight, 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.restore();
+}
 
