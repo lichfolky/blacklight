@@ -32,7 +32,6 @@ if (ctx) {
             }
         }
         scoreEl.textContent = score + " " + x + " " + y;
-
         mouseout = false;
     });
 
@@ -50,27 +49,21 @@ if (ctx) {
     );
     imgdark.src = "./img/darkroom.jpg";
     imglight.src = "./img/lightroom.jpg";
-    drawdark();
-}
-
-function drawdark() {
-    if (!loadingdark) {
-        ctx.drawImage(imgdark, 0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-    requestAnimationFrame(drawlight);
+    drawlight();
 }
 
 function drawlight() {
-
-    if (!loadingdark && !loadinglight && !mouseout) {
+    if (!loadingdark && !loadinglight) {
         ctx.drawImage(imgdark, 0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(x, y, 60, 0, Math.PI * 2, true);
-        //ctx.createRadialGradient(x, y, 1, x, y, 50);
-        ctx.clip();
-        ctx.drawImage(imglight, 0, 0, ctx.canvas.width, ctx.canvas.height);
-        ctx.restore();
+        if (!mouseout) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, 60, 0, Math.PI * 2, true);
+            //ctx.createRadialGradient(x, y, 1, x, y, 50);
+            ctx.clip();
+            ctx.drawImage(imglight, 0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.restore();
+        }
     }
     requestAnimationFrame(drawlight);
 }
