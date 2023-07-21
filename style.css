@@ -1,0 +1,22 @@
+* {
+    margin: 0;
+}
+
+body {
+    display: grid;
+    place-content: center;
+    min-height: 100dvh;
+    background-color: black;
+    color: white;
+}
+
+canvas {
+    border: 0px solid black;
+}
+
+.mention {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 1rem;
+    text-align: right;
+}
