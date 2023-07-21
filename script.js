@@ -29,8 +29,8 @@ if (ctx) {
         "load",
         () => loadinglight = false
     );
-    imgdark.src = "./img/darkroom.jpg";
-    imglight.src = "./img/lightroom.jpg";
+    imgdark.src = "/blacklight/darkroom.jpg";
+    imglight.src = "/blacklight/img/lightroom.jpg";
     drawdark();
 }
 
