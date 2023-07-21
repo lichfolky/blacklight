@@ -34,8 +34,8 @@ if (ctx) {
             loadinglight = false;
         }
     );
-    imgdark.src = "blacklight/img/darkroom.jpg";
-    imglight.src = "blacklight/img/lightroom.jpg";
+    imgdark.src = "/img/darkroom.jpg";
+    imglight.src = "/img/lightroom.jpg";
     drawdark();
 }
 
