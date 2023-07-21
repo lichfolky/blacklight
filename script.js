@@ -36,7 +36,7 @@ if (ctx) {
         }
 
         if (score == 5) {
-            scoreEl.innerHTML = "You win!";
+            scoreEl.innerHTML = "You won!";
         } else {
             scoreEl.innerHTML = "<p>" + score + "/5</p>";
         }
