@@ -9,8 +9,6 @@ let coursorY = 0;
 let positionX = 0;
 let positionY = 0;
 
-
-positionX;
 let cursorSize = 60;
 let mouseout = true;
 const coursorTollerance = 1;
@@ -23,8 +21,11 @@ const imglight = new Image();
 let score = 0;
 
 // Points to find
-let pointsX = [2, 44, 68, 89, 66];
-let pointsY = [70, 22, 25, 62, 85];
+
+let _pointsX = [2, 44, 68, 89, 66];
+let _pointsY = [70, 22, 25, 62, 85];
+let pointsX = _pointsX;
+let pointsY = _pointsY;
 let poinstToFind = pointsX.length;
 let foundX = [];
 let foundY = [];
@@ -39,8 +40,9 @@ if (ctx) {
     */
 
     // Screen resize and mantain aspect ratio
-    canvas.height = canvas.clientHeight;
-    canvas.width = (canvas.height / imageSizeX) * imageSizeY;
+    ctx.canvas.height = canvas.clientHeight;
+    ctx.canvas.width = (canvas.height / imageSizeX) * imageSizeY;
+    cursorSize = ctx.canvas.width / 10;
 
     const observer = new ResizeObserver((entries) => {
         canvas.height = canvas.clientHeight;
@@ -124,16 +126,14 @@ function updatePosition(clientX, clientY) {
     coursorX = Math.round(clientX - rect.left);
     coursorY = Math.round(clientY - rect.top);
 
-    positionX = Math.round((coursorX / imageSizeX) * 100);
-    positionY = Math.round((coursorY / imageSizeY) * 100);
+    positionX = Math.round((coursorX / canvas.width) * 100);
+    positionY = Math.round((coursorY / canvas.height) * 100);
     for (let i = 0; i < pointsX.length; i++) {
         if (pointsX[i] <= positionX + coursorTollerance && pointsX[i] >= positionX - coursorTollerance) {
             if (pointsY[i] <= positionY + coursorTollerance && pointsY[i] >= positionY - coursorTollerance) {
                 score++;
-                pointsX.splice(i, 1);
-                pointsY.splice(i, 1);
-                foundX.push(coursorX);
-                foundY.push(coursorY);
+                foundX.push(pointsX.splice(i, 1) * canvas.width / 100);
+                foundY.push(pointsY.splice(i, 1) * canvas.height / 100);
             }
         }
     }
