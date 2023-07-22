@@ -6,9 +6,14 @@ const imageSizeY = 600;
 
 let coursorX = 0;
 let coursorY = 0;
+let positionX = 0;
+let positionY = 0;
+
+
+positionX;
 let cursorSize = 60;
 let mouseout = true;
-const coursorTollerance = 20;
+const coursorTollerance = 1;
 
 let loadinglight = true;
 let loadingdark = true;
@@ -18,8 +23,8 @@ const imglight = new Image();
 let score = 0;
 
 // Points to find
-let pointsX = [22, 600, 800, 400, 615];
-let pointsY = [420, 510, 370, 130, 145];
+let pointsX = [2, 44, 68, 89, 66];
+let pointsY = [70, 22, 25, 62, 85];
 let poinstToFind = pointsX.length;
 let foundX = [];
 let foundY = [];
@@ -56,9 +61,7 @@ if (ctx) {
 
     // Mouse update cursor
     canvas.addEventListener("mousemove", (event) => {
-
         updatePosition(Math.round(event.clientX), Math.round(event.clientY));
-
     });
 
     canvas.addEventListener("mouseout", (event) => {
@@ -85,7 +88,7 @@ function drawlight() {
     if (score == poinstToFind) {
         scoreEl.innerHTML = "You won!";
     } else {
-        scoreEl.innerHTML = "<p>" + score + "/5  (" + coursorX + ", " + coursorY + ")</p>";
+        scoreEl.innerHTML = "<p>" + score + "/5  (" + coursorX + ", " + coursorY + ") (" + positionX + ", " + positionY + ")</p>";
         mouseout = false;
     }
     if (!loadingdark && !loadinglight) {
@@ -117,17 +120,20 @@ function drawDot(x, y, size) {
 
 // Update cursor position, and check if a point is found
 function updatePosition(clientX, clientY) {
-    console.log(clientX, clientY);
     const rect = canvas.getBoundingClientRect();
     coursorX = Math.round(clientX - rect.left);
     coursorY = Math.round(clientY - rect.top);
 
+    positionX = Math.round((coursorX / imageSizeX) * 100);
+    positionY = Math.round((coursorY / imageSizeY) * 100);
     for (let i = 0; i < pointsX.length; i++) {
-        if (pointsX[i] <= coursorX + coursorTollerance && pointsX[i] >= coursorX - coursorTollerance) {
-            if (pointsY[i] <= coursorY + coursorTollerance && pointsY[i] >= coursorY - coursorTollerance) {
+        if (pointsX[i] <= positionX + coursorTollerance && pointsX[i] >= positionX - coursorTollerance) {
+            if (pointsY[i] <= positionY + coursorTollerance && pointsY[i] >= positionY - coursorTollerance) {
                 score++;
-                foundX.push(pointsX.splice(i, 1));
-                foundY.push(pointsY.splice(i, 1));
+                pointsX.splice(i, 1);
+                pointsY.splice(i, 1);
+                foundX.push(coursorX);
+                foundY.push(coursorY);
             }
         }
     }
