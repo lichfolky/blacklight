@@ -8,7 +8,9 @@ https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip
 https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/touches
 
 TODO: 
-- Light back gradient
-- cuter cats
-- mobile and touch support
-- add multiple touches
+- [*] mobile support
+- [ ] gradient blacklight around cursor effect
+- [ ] cuter cats
+- [ ] mobile experience it's to improve
+- [ ] add multiple touches
+- [ ] landscape mode
