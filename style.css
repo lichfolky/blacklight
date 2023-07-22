@@ -12,6 +12,8 @@ body {
 
 canvas {
     border: 0px solid black;
+    max-width: 900px;
+    max-height: 600px;
 }
 
 .mention {

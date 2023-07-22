@@ -2,8 +2,8 @@ const canvas = document.getElementById("scene");
 const scoreEl = document.querySelector(".score");
 const ctx = canvas?.getContext("2d");
 
-let mouseX = 0;
-let mouseY = 0;
+let coursorX = 0;
+let coursorY = 0;
 let loadinglight = true;
 let loadingdark = true;
 const imgdark = new Image();
@@ -21,28 +21,19 @@ const tollerance = 20;
 
 if (ctx) {
     scoreEl.innerHTML = "<p>" + score + "/5</p>";
+
+    canvas.addEventListener("touchstart", (event) => {
+        updatePosition(event.touches[0].clientX, event.touches[0].clientY);
+    });
+    canvas.addEventListener("touchmove", (event) => {
+        updatePosition(event.touches[0].clientX, event.touches[0].clientY);
+    });
+    canvas.addEventListener("touchend", (event) => {
+        mouseout = true;
+    });
+
     canvas.addEventListener("mousemove", (event) => {
-        const rect = canvas.getBoundingClientRect();
-        mouseX = event.clientX - rect.left;
-        mouseY = event.clientY - rect.top;
-        for (let i = 0; i < pointsX.length; i++) {
-            if (pointsX[i] <= mouseX + tollerance && pointsX[i] >= mouseX - tollerance) {
-                if (pointsY[i] <= mouseY + tollerance && pointsY[i] >= mouseY - tollerance) {
-                    score++;
-                    foundX.push(pointsX.splice(i, 1));
-                    foundY.push(pointsY.splice(i, 1));
-                }
-            }
-        }
-
-        if (score == 5) {
-            scoreEl.innerHTML = "You won!";
-        } else {
-            scoreEl.innerHTML = "<p>" + score + "/5</p>";
-        }
-        scoreEl.innerHTML += "<p>" + mouseX + " " + mouseY + "</p>";
-
-        mouseout = false;
+        updatePosition(event.clientX, event.clientY);
     });
 
     canvas.addEventListener("mouseout", (event) => {
@@ -66,7 +57,7 @@ function drawlight() {
     if (!loadingdark && !loadinglight) {
         ctx.drawImage(imgdark, 0, 0, ctx.canvas.width, ctx.canvas.height);
         if (!mouseout) {
-            drawDot(mouseX, mouseY, 60);
+            drawDot(coursorX, coursorY, 60);
             //ctx.createRadialGradient(x, y, 1, x, y, 50);
         }
         for (let i = 0; i < foundX.length; i++) {
@@ -75,7 +66,6 @@ function drawlight() {
     }
     requestAnimationFrame(drawlight);
 }
-
 
 function drawDot(x, y, size) {
     ctx.save();
@@ -86,3 +76,29 @@ function drawDot(x, y, size) {
     ctx.restore();
 }
 
+function updatePosition(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    coursorX = clientX - rect.left;
+    coursorY = clientY - rect.top;
+
+
+    for (let i = 0; i < pointsX.length; i++) {
+        if (pointsX[i] <= coursorX + tollerance && pointsX[i] >= coursorX - tollerance) {
+            if (pointsY[i] <= coursorY + tollerance && pointsY[i] >= coursorY - tollerance) {
+                score++;
+                foundX.push(pointsX.splice(i, 1));
+                foundY.push(pointsY.splice(i, 1));
+            }
+        }
+    }
+
+    if (score == 5) {
+        scoreEl.innerHTML = "You won!";
+    } else {
+        scoreEl.innerHTML = "<p>" + score + "/5</p>";
+    }
+    scoreEl.innerHTML += "<p>" + coursorX + " " + coursorY + "</p>";
+
+    mouseout = false;
+
+}
